@@ -237,40 +237,50 @@
         async function fetchRecentEvents() {
             try {
                 // Change the URL to the Vercel URL for production
-                const response = await fetch('https://noble-hands.vercel.app/recent-events'); 
-                const events = await response.json();
-    
-                // Get the container to display events
-                const eventsContainer = document.getElementById('recentEventsContainer');
+                const response = await fetch('https://noble-hands.vercel.app/recent-events');
                 
-                // Clear previous events
-                eventsContainer.innerHTML = '';
-    
-                // Loop through the events and create a card for each
-                events.forEach(event => {
-                    const eventCard = document.createElement('div');
-                    eventCard.classList.add('col-md-3', 'mb-4');
-    
-                    eventCard.innerHTML = `
-                        <div class="card recent-events-card">
-                            <div class="card-body recent-events-card-body">
-                                <h5 class="card-title">${event.name}</h5>
-                                <p class="card-text">${event.description}</p>
-                                <div class="details">
-                                    <p><strong>Work Type:</strong> ${event.workType}</p>
-                                    <p><strong>Event Type:</strong> ${event.eventType}</p>
+                // Check if the response is in JSON format
+                const contentType = response.headers.get("content-type");
+                if (contentType && contentType.includes("application/json")) {
+                    const events = await response.json();
+        
+                    // Get the container to display events
+                    const eventsContainer = document.getElementById('recentEventsContainer');
+                    
+                    // Clear previous events
+                    eventsContainer.innerHTML = '';
+        
+                    // Loop through the events and create a card for each
+                    events.forEach(event => {
+                        const eventCard = document.createElement('div');
+                        eventCard.classList.add('col-md-3', 'mb-4');
+        
+                        eventCard.innerHTML = `
+                            <div class="card recent-events-card">
+                                <div class="card-body recent-events-card-body">
+                                    <h5 class="card-title">${event.name}</h5>
+                                    <p class="card-text">${event.description}</p>
+                                    <div class="details">
+                                        <p><strong>Work Type:</strong> ${event.workType}</p>
+                                        <p><strong>Event Type:</strong> ${event.eventType}</p>
+                                    </div>
+                                </div>
+                                <div class="card-footer text-muted date-location">
+                                    <p>${new Date(event.date).toLocaleDateString()}</p>
+                                    <p class="location">Location: ${event.location}</p>
                                 </div>
                             </div>
-                            <div class="card-footer text-muted date-location">
-                                <p>${new Date(event.date).toLocaleDateString()}</p>
-                                <p class="location">Location: ${event.location}</p>
-                            </div>
-                        </div>
-                    `;
-    
-                    // Append the card to the container
-                    eventsContainer.appendChild(eventCard);
-                });
+                        `;
+        
+                        // Append the card to the container
+                        eventsContainer.appendChild(eventCard);
+                    });
+                } else {
+                    // If the response isn't JSON, log and show an error
+                    const text = await response.text();
+                    console.error('Expected JSON but got:', text);
+                    Swal.fire('Error', 'Could not fetch recent events. Please try again later.', 'error');
+                }
             } catch (error) {
                 console.error('Error fetching recent events:', error);
                 Swal.fire('Error', 'Could not fetch recent events. Please try again later.', 'error');
@@ -318,6 +328,7 @@
             }
         });
     </script>
+   
     
 </body>
 </html>
