@@ -9,12 +9,12 @@ const app = express();
 
 // Middleware
 app.use(bodyParser.json());
-app.use(cors());
 app.use(cors({
-  origin: 'https://noble-hands.vercel.app', // Replace with your frontend URL
+  origin: 'https://noble-hands.vercel.app',  // Replace with your frontend URL
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type'],
 }));
+
 // MongoDB Connection
 const mongoURI = "mongodb+srv://abhaymallick2004:8421822204@cluster0.69cgq.mongodb.net/nobleHands?retryWrites=true&w=majority";
 
@@ -33,6 +33,7 @@ const userSchema = new mongoose.Schema({
 
 // User Model
 const User = mongoose.model('User', userSchema);
+
 
 // Event Schema
 const eventSchema = new mongoose.Schema({
@@ -235,8 +236,9 @@ app.get('/event', (req, res) => {
 });
 
 // Vercel URL
+c
+// Start the server
 const vercelUrl = 'https://noble-hands-ajaymallick1220-ajaymallick1220s-projects.vercel.app/';
-
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running at ${vercelUrl}`);
