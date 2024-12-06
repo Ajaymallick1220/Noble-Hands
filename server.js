@@ -241,7 +241,7 @@ app.get('/event', (req, res) => {
 // Vercel URL
 c
 // Start the server
-const vercelUrl = 'https://noble-hands-ajaymallick1220-ajaymallick1220s-projects.vercel.app/';
+const vercelUrl = 'https://noble-hands.vercel.app//';
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running at ${vercelUrl}`);

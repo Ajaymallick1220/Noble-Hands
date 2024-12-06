@@ -237,7 +237,7 @@
         async function fetchRecentEvents() {
             try {
                 // Change the URL to the Vercel URL for production
-                const response = await fetch('https://noble-hands-ajaymallick1220-ajaymallick1220s-projects.vercel.app/recent-events'); 
+                const response = await fetch('https://noble-hands.vercel.app/recent-events'); 
                 const events = await response.json();
     
                 // Get the container to display events
@@ -296,7 +296,7 @@
     
             try {
                 // Change the URL to the Vercel URL for production
-                const response = await fetch('https://noble-hands-ajaymallick1220-ajaymallick1220s-projects.vercel.app/events', {
+                const response = await fetch('https://noble-hands.vercel.app/events', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
