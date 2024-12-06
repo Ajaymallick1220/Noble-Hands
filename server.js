@@ -9,11 +9,14 @@ const app = express();
 
 // Middleware
 app.use(bodyParser.json());
+// Enable CORS for specific origin (in production environment)
 app.use(cors({
-  origin: 'https://noble-hands.vercel.app',  // Replace with your frontend URL
+  origin: 'https://noble-hands.vercel.app', // Frontend URL
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type'],
+  credentials: true // Allow cookies and other credentials
 }));
+
 
 // MongoDB Connection
 const mongoURI = "mongodb+srv://abhaymallick2004:8421822204@cluster0.69cgq.mongodb.net/nobleHands?retryWrites=true&w=majority";
