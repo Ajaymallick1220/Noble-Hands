@@ -128,7 +128,7 @@ function updateDashboard(data) {
     if (data.events.length > 0) {
         data.events.forEach(event => {
             const eventCard = `
-                <div class="card event-card" data-event-id="${event._id}">
+                <div class="card event-card" id="event-${event._id}" data-event-id="${event._id}">
                     <div class="card-body">
                         <h5 class="card-title">${event.name}</h5>
                         <p class="card-text">${event.description}</p>
@@ -158,6 +158,9 @@ function updateDashboard(data) {
     } else {
         eventsList.innerHTML = '<p>No upcoming events available.</p>';
     }
+
+    // Update the accepted events section
+    updateAcceptedEvents(data.acceptedEvents);
 }
 
 // Handle Accept Event
@@ -210,7 +213,7 @@ function handleAcceptEvent(event) {
     })
     .catch(error => {
         console.error('Error accepting event:', error);
-        alert('An error occurred while accepting the event. Please try again later.');
+        alert('An error occurred. Please try again later.');
     });
 }
 
@@ -222,51 +225,54 @@ function handleRejectEvent(event) {
     fetch(`/api/reject-event?userId=${userId}&eventId=${eventId}`, {
         method: 'POST',
     })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to reject event.');
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to reject event.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            const upcomingEventCard = document.getElementById(`event-${eventId}`);
+            if (upcomingEventCard) {
+                upcomingEventCard.remove(); // Remove event from upcoming list
             }
-            return response.json();
-        })
-        .then(data => {
-            if (data.success) {
-                // Remove the event card from the UI
-                document.querySelector(`.event-card[data-event-id="${eventId}"]`).remove();
-            } else {
-                alert('Failed to reject event. Please try again.');
-            }
-        })
-        .catch(error => {
-            console.error('Error rejecting event:', error);
-        });
+        } else {
+            alert('Failed to reject event.');
+        }
+    })
+    .catch(error => {
+        console.error('Error rejecting event:', error);
+        alert('An error occurred. Please try again later.');
+    });
 }
 
-// Update the accepted events section
+// Function to update accepted events list on dashboard
 function updateAcceptedEvents(acceptedEvents) {
-    const totalAcceptedEvents = document.getElementById('total-accepted-events');
-    totalAcceptedEvents.textContent = acceptedEvents.length;
-
     const acceptedEventsList = document.getElementById('accepted-events');
-    acceptedEventsList.innerHTML = '';
+    acceptedEventsList.innerHTML = '';  // Clear existing events
+
     acceptedEvents.forEach(event => {
         const acceptedCard = `
-            <div class="card">
+            <div class="card" id="accepted-event-${event._id}">
                 <div class="card-body">
                     <h5 class="card-title">${event.name}</h5>
                     <p class="card-text">${event.description}</p>
+                    <p class="card-text">
+                        <strong>Location:</strong> ${event.location} <br>
+                        <strong>Date:</strong> ${new Date(event.date).toLocaleDateString()} <br>
+                        <strong>Time:</strong> ${event.time}
+                    </p>
                 </div>
             </div>`;
         acceptedEventsList.innerHTML += acceptedCard;
     });
 }
 
-// Helper to get userId from URL
 function getUserId() {
     const params = new URLSearchParams(window.location.search);
     return params.get('userId');
 }
-
-
-    </script>
+</script>
 </body>
 </html>

@@ -236,17 +236,21 @@
         // Function to fetch and display recent events
         async function fetchRecentEvents() {
             try {
-                const response = await fetch('http://localhost:5000/recent-events');
+                // Change the URL to the Vercel URL for production
+                const response = await fetch('https://noble-hands-ajaymallick1220-ajaymallick1220s-projects.vercel.app/recent-events'); 
                 const events = await response.json();
-
+    
                 // Get the container to display events
                 const eventsContainer = document.getElementById('recentEventsContainer');
-
+                
+                // Clear previous events
+                eventsContainer.innerHTML = '';
+    
                 // Loop through the events and create a card for each
                 events.forEach(event => {
                     const eventCard = document.createElement('div');
                     eventCard.classList.add('col-md-3', 'mb-4');
-
+    
                     eventCard.innerHTML = `
                         <div class="card recent-events-card">
                             <div class="card-body recent-events-card-body">
@@ -263,7 +267,7 @@
                             </div>
                         </div>
                     `;
-
+    
                     // Append the card to the container
                     eventsContainer.appendChild(eventCard);
                 });
@@ -272,12 +276,13 @@
                 Swal.fire('Error', 'Could not fetch recent events. Please try again later.', 'error');
             }
         }
-
+    
         // Call the function to fetch recent events when the page loads
         fetchRecentEvents();
+    
         document.getElementById('eventForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-
+    
             const eventData = {
                 name: document.getElementById('eventName').value,
                 location: document.getElementById('eventLocation').value,
@@ -288,18 +293,19 @@
                 workType: document.getElementById('workType').value,
                 eventType: document.getElementById('eventType').value,
             };
-
+    
             try {
-                const response = await fetch('http://localhost:5000/events', {
+                // Change the URL to the Vercel URL for production
+                const response = await fetch('https://noble-hands-ajaymallick1220-ajaymallick1220s-projects.vercel.app/events', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify(eventData),
                 });
-
+    
                 const result = await response.json();
-
+    
                 if (response.ok) {
                     Swal.fire('Success', 'Event created successfully!', 'success').then(() => {
                         window.location.href = 'events.html'; // Redirect after success
@@ -312,5 +318,6 @@
             }
         });
     </script>
+    
 </body>
 </html>
