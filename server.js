@@ -10,7 +10,11 @@ const app = express();
 // Middleware
 app.use(bodyParser.json());
 app.use(cors());
-
+app.use(cors({
+  origin: 'https://noble-hands.vercel.app', // Replace with your frontend URL
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type'],
+}));
 // MongoDB Connection
 const mongoURI = "mongodb+srv://abhaymallick2004:8421822204@cluster0.69cgq.mongodb.net/nobleHands?retryWrites=true&w=majority";
 
