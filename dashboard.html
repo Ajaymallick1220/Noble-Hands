@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Dashboard - Noble Hands</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+        #accepted-events {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Noble Hands</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-danger" id="logout-btn">Logout</button>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="event.html">Events</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-5">
+        <h1 id="welcome-message" class="mb-4 text-center">Welcome!</h1>
+
+        <div class="mb-4">
+            <h4>Total Accepted Events: <span id="total-accepted-events">0</span></h4>
+        </div>
+
+        <!-- Upcoming Events Section -->
+        <h3>Upcoming Events</h3>
+        <div id="events-list"></div>
+
+        <!-- Accepted Events Section -->
+        <h3 id="accepted-events-heading">Accepted Events</h3>
+        <div id="accepted-events"></div>
+    </div>
+
+    <footer class="bg-dark text-center text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; 2024 Noble Hands. All rights reserved.</p>
+                </div>
+                <div class="col-md-6">
+                    <div class="social-icons">
+                        <a href="#" class="text-white mx-2"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white mx-2"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white mx-2"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="text-white mx-2"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+<script src="js/script.js"></script>
+    <script>
+       document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const userId = params.get('userId');
+
+    if (!userId) {
+        alert('User ID is missing. Redirecting to login page.');
+        window.location.href = '/login.html';
+        return;
+    }
+
+    // Fetch dashboard data
+    fetch(`/api/dashboard-data?userId=${userId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Failed to fetch dashboard data: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            updateDashboard(data);
+        })
+        .catch(error => {
+            console.error('Error fetching dashboard data:', error);
+            alert('Failed to load dashboard data. Please try again later.');
+        });
+
+    // Handle logout
+    document.getElementById('logout-btn').addEventListener('click', () => {
+        window.location.href = '/login.html';
+    });
+});
+
+// Function to update the dashboard UI
+function updateDashboard(data) {
+    // Display username
+    const welcomeMessage = document.getElementById('welcome-message');
+    welcomeMessage.textContent = `Welcome, ${data.username}!`;
+
+    // Display total accepted events
+    document.getElementById('total-accepted-events').textContent = data.acceptedEvents.length;
+
+    // Display upcoming events
+    const eventsList = document.getElementById('events-list');
+    if (data.events.length > 0) {
+        data.events.forEach(event => {
+            const eventCard = `
+                <div class="card event-card" data-event-id="${event._id}">
+                    <div class="card-body">
+                        <h5 class="card-title">${event.name}</h5>
+                        <p class="card-text">${event.description}</p>
+                        <p class="card-text">
+                            <strong>Location:</strong> ${event.location} <br>
+                            <strong>Date:</strong> ${new Date(event.date).toLocaleDateString()} <br>
+                            <strong>Time:</strong> ${event.time}
+                        </p>
+                        <p class="card-text">
+                            <strong>Volunteers Required:</strong> ${event.volunteersRequired}
+                        </p>
+                        <button class="btn btn-success accept-btn" data-event-id="${event._id}">Accept</button>
+                        <button class="btn btn-danger reject-btn" data-event-id="${event._id}">Reject</button>
+                    </div>
+                </div>`;
+            eventsList.innerHTML += eventCard;
+        });
+
+        // Attach event listeners to Accept and Reject buttons
+        document.querySelectorAll('.accept-btn').forEach(button => {
+            button.addEventListener('click', handleAcceptEvent);
+        });
+
+        document.querySelectorAll('.reject-btn').forEach(button => {
+            button.addEventListener('click', handleRejectEvent);
+        });
+    } else {
+        eventsList.innerHTML = '<p>No upcoming events available.</p>';
+    }
+}
+
+// Handle Accept Event
+function handleAcceptEvent(event) {
+    const eventId = event.target.getAttribute('data-event-id');
+    const userId = getUserId();  // Function to retrieve the logged-in user's ID
+
+    fetch(`/api/accept-event?userId=${userId}&eventId=${eventId}`, {
+        method: 'POST',
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to accept event.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            // Remove the event from Upcoming Events
+            const upcomingEventCard = document.getElementById(`event-${eventId}`);
+            if (upcomingEventCard) {
+                upcomingEventCard.remove();  // Remove the card from upcoming events
+            }
+
+            // Add the event to Accepted Events section
+            const acceptedEventsList = document.getElementById('accepted-events');
+            const acceptedCard = `
+                <div class="card" id="accepted-event-${eventId}">
+                    <div class="card-body">
+                        <h5 class="card-title">${data.event.name}</h5>
+                        <p class="card-text">${data.event.description}</p>
+                        <p class="card-text">
+                            <strong>Location:</strong> ${data.event.location} <br>
+                            <strong>Date:</strong> ${new Date(data.event.date).toLocaleDateString()} <br>
+                            <strong>Time:</strong> ${data.event.time}
+                        </p>
+                    </div>
+                </div>`;
+            acceptedEventsList.innerHTML += acceptedCard;
+
+            // Update the total count of accepted events (if displayed)
+            const totalAcceptedEvents = document.getElementById('total-accepted-events');
+            if (totalAcceptedEvents) {
+                totalAcceptedEvents.textContent = parseInt(totalAcceptedEvents.textContent) + 1;
+            }
+
+        } else {
+            alert(data.error || 'Failed to accept event. Please try again.');
+        }
+    })
+    .catch(error => {
+        console.error('Error accepting event:', error);
+        alert('An error occurred while accepting the event. Please try again later.');
+    });
+}
+
+// Handle Reject Event
+function handleRejectEvent(event) {
+    const eventId = event.target.getAttribute('data-event-id');
+    const userId = getUserId();
+
+    fetch(`/api/reject-event?userId=${userId}&eventId=${eventId}`, {
+        method: 'POST',
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to reject event.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                // Remove the event card from the UI
+                document.querySelector(`.event-card[data-event-id="${eventId}"]`).remove();
+            } else {
+                alert('Failed to reject event. Please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error rejecting event:', error);
+        });
+}
+
+// Update the accepted events section
+function updateAcceptedEvents(acceptedEvents) {
+    const totalAcceptedEvents = document.getElementById('total-accepted-events');
+    totalAcceptedEvents.textContent = acceptedEvents.length;
+
+    const acceptedEventsList = document.getElementById('accepted-events');
+    acceptedEventsList.innerHTML = '';
+    acceptedEvents.forEach(event => {
+        const acceptedCard = `
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">${event.name}</h5>
+                    <p class="card-text">${event.description}</p>
+                </div>
+            </div>`;
+        acceptedEventsList.innerHTML += acceptedCard;
+    });
+}
+
+// Helper to get userId from URL
+function getUserId() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('userId');
+}
+
+
+    </script>
+</body>
+</html>

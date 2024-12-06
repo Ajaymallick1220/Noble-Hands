@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Login - Noble Hands</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Noble Hands</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.html">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="event.html">Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <form class="d-flex">
+                            <input class="form-control me-2" type="search" placeholder="Search Events" aria-label="Search">
+                            <button class="btn btn-outline-primary" type="submit">Search</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="h-100 gradient-form" style="background-color: #eee;">
+      <div class="container py-5 h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+              <div class="col-xl-10">
+                  <div class="card rounded-3 text-black">
+                      <div class="row g-0">
+                          <div class="col-lg-6">
+                              <div class="card-body p-md-5 mx-md-4">
+                                  <div class="text-center">
+                                      <img src="images/image3.jpg" style="width: 185px;" alt="logo">
+                                      <h4 class="mt-1 mb-5 pb-1">We are The NOBLE HANDS</h4>
+                                  </div>
+                                  <form id="loginForm">
+                                      <p>Please login to your account</p>
+                                      <div class="form-outline mb-4">
+                                          <input type="text" id="form2Example11" class="form-control" placeholder="Username (Email/Phone)" />
+                                          <label class="form-label" for="form2Example11">Username</label>
+                                      </div>
+                                      <div class="form-outline mb-4 position-relative">
+                                          <input type="password" id="form2Example22" class="form-control" />
+                                          <label class="form-label" for="form2Example22">Password</label>
+                                          <span id="togglePassword" class="position-absolute top-50 end-0 translate-middle-y me-3" style="cursor: pointer;">
+                                              <i class="fas fa-eye-slash"></i>
+                                          </span>
+                                      </div>
+                                      <div class="text-center pt-1 mb-5 pb-1">
+                                          <button data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit">Log in</button>
+                                      </div>
+                                  </form>
+                              </div>
+                          </div>
+                          <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
+                              <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+                                  <h4 class="mb-4">We are more than just Volunteers...</h4>
+                                  <p class="small mb-0 text-center text-bg-danger">" Sign In and Become a Part of a Community That Cares – Your Actions Can Help Change Lives and Create a Better Future for All. "</p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"></script>
+    <script src="js/script.js" async defer></script>
+    <script>
+      document.getElementById('loginForm').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          
+          const username = document.getElementById('form2Example11').value;
+          const password = document.getElementById('form2Example22').value;
+  
+          // Validate username and password
+          if (!username || !password) {
+              alert('Please fill out both fields.');
+              return;
+          }
+  
+          try {
+              const response = await fetch('http://localhost:5000/login', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ username, password }),
+              });
+              const result = await response.json();  // Use 'result' instead of 'data'
+
+if (response.ok) {
+  // Login successful, redirect to dashboard and pass userId as query parameter
+  window.location.href = `/dashboard?userId=${result.userId}`; // Assuming you use query parameters for the user ID
+} else {
+  // Handle login failure (e.g., show an error message)
+  alert(result.message || 'Login failed.');
+}
+} catch (error) {
+console.error('Error during login:', error);
+alert('Something went wrong. Please try again later.');
+}
+});
+      // Password reveal functionality
+      const passwordInput = document.getElementById('form2Example22');
+      const togglePassword = document.getElementById('togglePassword');
+  
+      togglePassword.addEventListener('click', () => {
+          // Toggle the password input type
+          const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+          passwordInput.setAttribute('type', type);
+  
+          // Toggle the eye icon
+          togglePassword.innerHTML = type === 'password'
+              ? '<i class="fas fa-eye-slash"></i>'
+              : '<i class="fas fa-eye"></i>';
+      });
+  </script>
+  
+</body>
+</html>

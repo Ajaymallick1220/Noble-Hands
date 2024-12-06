@@ -1,0 +1,391 @@
+/* Gradient Background for Custom Elements */
+.gradient-custom-2 {
+  background: #fccb90;
+  background: -webkit-linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
+  background: linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
+}
+
+/* Media Queries for Large Screens */
+@media (min-width: 768px) {
+  .gradient-form {
+    height: 100vh !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .gradient-custom-2 {
+    border-top-right-radius: .3rem;
+    border-bottom-right-radius: .3rem;
+  }
+}
+
+/* Navbar Styling */
+.navbar {
+  background-color: #2c3e50; /* Dark blue-gray color */
+  padding: 10px 20px;
+}
+
+.navbar-nav .nav-link {
+  color: #ecf0f1; /* Light color for text */
+  padding: 10px 20px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #3498db; /* Highlight color on hover */
+  background-color: #34495e; /* Darken background on hover */
+  border-radius: 4px;
+}
+
+.navbar-nav .nav-item {
+  margin-right: 15px; /* Space between menu items */
+}
+
+.navbar-brand {
+  color: #ecf0f1;
+  font-weight: 700;
+  font-size: 24px;
+}
+
+.navbar-brand:hover {
+  color: #3498db;
+}
+
+/* Search Bar Styling */
+.search-bar {
+  width: 250px;
+  border-radius: 25px;
+  padding: 5px 20px;
+  border: 1px solid #3498db;
+}
+
+.search-bar:focus {
+  outline: none;
+  border-color: #2980b9;
+}
+
+/* Custom Navbar Toggler Icon */
+.navbar-toggler-icon {
+  background-color: #ecf0f1;
+}
+
+/* Welcome Section Styling */
+.welcome-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color:#2c3e50; /* Semi-transparent blue background */
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  color: #ffffff;
+  margin-top: 20px;
+}
+.welcome-container img {
+  width: 100%; /* Makes image responsive to its container */
+  max-width: 500px; /* Sets a max width for the image */
+  height: auto; /* Maintain the aspect ratio */
+}
+
+/* Welcome text */
+.welcome-container h1 {
+  font-size: 36px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5); /* Shadow to make text pop */
+}
+
+/* Slogan Text */
+.welcome-container p {
+  font-size: 20px;
+  color: #ffffff;
+  line-height: 1.5;
+  font-weight: 500;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3); /* Light shadow for better visibility */
+}
+/* Button container styling */
+.button-container {
+  display: flex;
+  flex-direction: column; /* Stack buttons vertically */
+  justify-content: center;
+  align-items: center;
+  gap: 15px; /* Space between buttons */
+  margin-top: 20px;
+}
+
+/* Button styles */
+.button-container .btn {
+  width: 250px; /* Fixed width for equal size */
+  font-size: 18px;
+  padding: 12px 30px;
+  border-radius: 25px;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+}
+
+/* Button Hover Effects */
+.button-container .btn:hover {
+  transform: scale(1.05);
+  background-color: #2980b9; /* Darker blue for "Join Us" */
+}
+
+/* Join Us button */
+.button-container .btn-primary {
+  background-color: #3498db; /* Main blue color */
+}
+
+/* Register Event button */
+.button-container .btn-success {
+  background-color: #2ecc71; /* Green color */
+}
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 15px;
+  }
+  
+  .welcome-container {
+    padding: 30px;
+  }
+
+  .welcome-container h1 {
+    font-size: 28px;
+  }
+
+  .welcome-container p {
+    font-size: 18px;
+  }
+
+  .button-container .btn {
+    width: 100%; /* Full width on small screens */
+  }
+}
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 15px;
+  }
+  
+  .welcome-container {
+    padding: 30px;
+  }
+
+  .welcome-container h1 {
+    font-size: 28px;
+  }
+
+  .welcome-container p {
+    font-size: 18px;
+  }
+
+  .button-container {
+    flex-direction: column;
+  }
+
+  .button-container .btn {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
+/* Image Container Styling */
+.container img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Gradient Section Styling */
+.gradient-custom-2 {
+  background: #fccb90;
+  background: -webkit-linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
+  background: linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
+}
+
+@media (min-width: 768px) {
+  .gradient-form {
+    height: 100vh !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .gradient-custom-2 {
+    border-top-right-radius: .3rem;
+    border-bottom-right-radius: .3rem;
+  }
+}
+
+/* Styling for footer */
+footer {
+  background-color: #2c3e50; /* Dark blue-gray background */
+}
+
+footer .social-icons a {
+  font-size: 24px;
+  transition: color 0.3s;
+}
+
+footer .social-icons a:hover {
+  color: #3498db; /* Highlight color for social icons on hover */
+}
+
+footer p {
+  font-size: 16px;
+  color: #ecf0f1;
+}
+
+footer .container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+footer .row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  footer .row {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  footer .social-icons {
+    margin-top: 15px;
+  }
+}
+/* General Counter Box Styling */
+.counter-box {
+  text-align: center;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.counter-box h2 {
+  font-size: 40px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+.counter-box p {
+  font-size: 18px;
+  color: #777;
+  font-weight: 600;
+}
+
+/* Hover Effects for Counter Boxes */
+.counter-box:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+/* Animating the Counter Numbers */
+@keyframes counterAnimation {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.counter-box .count {
+  animation: counterAnimation 1.5s ease-in-out;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .counter-box {
+    padding: 30px;
+  }
+
+  .counter-box h2 {
+    font-size: 35px;
+  }
+
+  .counter-box p {
+    font-size: 16px;
+  }
+}
+
+/* General Section Styling */
+section {
+  padding: 50px 0;
+}
+
+section h2, section h3 {
+  color: #2c3e50;
+  font-weight: 700;
+}
+
+section p {
+  font-size: 18px;
+  color: #555;
+  line-height: 1.8;
+}
+
+section img {
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Features Section List Styling */
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+ul li {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+ul li strong {
+  color: #3498db;
+}
+
+/* Background Colors */
+.bg-light {
+  background-color: #f9f9f9 !important;
+}
+
+/* Call to Action */
+.bg-primary {
+  background-color: #3498db !important;
+  color: #fff !important;
+}
+
+.bg-primary a {
+  background-color: #ecf0f1;
+  color: #3498db;
+  font-size: 18px;
+  font-weight: 500;
+  padding: 10px 25px;
+  border-radius: 25px;
+  text-decoration: none;
+}
+
+.bg-primary a:hover {
+  background-color: #2980b9;
+  color: #fff;
+}
+
